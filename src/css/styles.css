@@ -18,3 +18,12 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+
+.card {
+  background-color: azure;
+  border-radius: 3%;
+  border-style: double;
+  width: 600px;
+  padding: 10px;
+  margin-bottom: 5px;
+}

@@ -19,6 +19,7 @@ body {
   margin-bottom: 16px;
 }
 
+li,
 .card {
   background-color: azure;
   border-radius: 3%;
@@ -26,4 +27,13 @@ body {
   width: 600px;
   padding: 10px;
   margin-bottom: 5px;
+}
+
+.country-list {
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
 }

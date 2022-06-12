@@ -3,15 +3,13 @@ import { fetchCountries } from './js/fetchCountryes';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 1000;
 
 const refs = {
     countryInfo: document.querySelector('.country-info'),
     searchInput: document.querySelector('#search-box'),
     countryList: document.querySelector('.country-list')
 }
-
-refs.searchInput.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(evt) {
     evt.preventDefault();
@@ -24,17 +22,21 @@ function onInput(evt) {
 
     fetchCountries(value)
         .then(name => {
+            refs.countryList.innerHTML = '';
+            refs.countryInfo.innerHTML = '';
+
             if (name.length === 1) {
-                refs.countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(name))
+                renderCountryInfo(name)
                 return
             }
 
-            else if (name.length > 10) {
-                Notiflix.Notify.info('Oops, there is no country with that name')
+            if (name.length > 10) {
+                Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+                return
             }
 
             else {
-                refs.countryInfo.insertAdjacentHTML('beforeend', renderCountryList(name))
+                renderCountryList(name);
             };
         }).catch(Notiflix.Notify.failure('Oops, there is no country with that name'));
 };
@@ -42,8 +44,8 @@ function onInput(evt) {
 function countryListMarkup(data) {
     return data.map(({ name, flags }) => {
         return `<li>
-                    <img src='${flags.png}' alt='${name.official}' />
-                    <h2 class='card-title'>Назва: ${name.official}</h2>
+                    <img src='${flags.png}' alt='${name.official}' width="100" />
+                    <h2 class='card-title'>${name.official}</h2>
                 </li>`;
     }).join('');
 };
@@ -68,7 +70,7 @@ function countryInfoMarkup(data) {
 
 function renderCountryList(country) {
     const markup = countryListMarkup(country);
-    refs.countryInfo.innerHTML = markup;
+    refs.countryList.innerHTML = markup;
 };
 
 function renderCountryInfo(country) {
@@ -78,3 +80,4 @@ function renderCountryInfo(country) {
 
 
 
+refs.searchInput.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));

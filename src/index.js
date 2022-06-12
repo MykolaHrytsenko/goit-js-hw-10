@@ -3,7 +3,7 @@ import { fetchCountries } from './js/fetchCountryes';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 1000;
+const DEBOUNCE_DELAY = 300;
 
 const refs = {
     countryInfo: document.querySelector('.country-info'),
@@ -14,11 +14,11 @@ const refs = {
 function onInput(evt) {
     evt.preventDefault();
 
-    const value = refs.searchInput.value.trim();
+    const value = evt.target.value.trim();
 
     if (evt === '') {
         return (refs.countryList.innerHTML = ''), (refs.countryInfo.innerHTML = '');
-    }
+    };
 
     fetchCountries(value)
         .then(name => {
@@ -30,7 +30,7 @@ function onInput(evt) {
                 return
             }
 
-            if (name.length > 10) {
+            if (name.length >= 10) {
                 Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
                 return
             }
@@ -38,8 +38,13 @@ function onInput(evt) {
             else {
                 renderCountryList(name);
             };
-        }).catch(Notiflix.Notify.failure('Oops, there is no country with that name'));
+        }).catch(onError);
+
 };
+
+function onError() {
+    Notiflix.Notify.failure('Oops, there is no country with that name')
+}
 
 function countryListMarkup(data) {
     return data.map(({ name, flags }) => {
@@ -71,13 +76,13 @@ function countryInfoMarkup(data) {
 function renderCountryList(country) {
     const markup = countryListMarkup(country);
     refs.countryList.innerHTML = markup;
+    return
 };
 
 function renderCountryInfo(country) {
     const markup = countryInfoMarkup(country);
     refs.countryInfo.innerHTML = markup;
+    return
 };
-
-
 
 refs.searchInput.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));

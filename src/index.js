@@ -3,7 +3,7 @@ import { fetchCountries } from './js/fetchCountryes';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 500;
 
 const refs = {
     countryInfo: document.querySelector('.country-info'),
@@ -16,7 +16,7 @@ function onInput(evt) {
 
     const value = evt.target.value.trim();
 
-    if (evt === '') {
+    if (!value) {
         return (refs.countryList.innerHTML = ''), (refs.countryInfo.innerHTML = '');
     };
 

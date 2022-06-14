@@ -3,7 +3,7 @@ import { fetchCountries } from './js/fetchCountryes';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 500;
+const DEBOUNCE_DELAY = 300;
 
 const refs = {
     countryInfo: document.querySelector('.country-info'),
